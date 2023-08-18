@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+    <link rel="stylesheet" href="./css/fontawesome.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="./js/fontawesome.js"></script>
+</head>
+
+<body>
+    <div ng-app="myApp" ng-controller="tableCtrl">
+        <!-- //ng-init : khởi tạo dữ liệu ban đầu  -->
+        <div class="container">
+            <!-- Đầu trang gồm Home -->
+            <div class="header">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Library</li>
+                    </ol>
+                </nav>
+            </div>
+            <!-- Thẻ add và Tìm kiếm -->
+            <div class="btn-action">
+                <div class="row">
+                    <!-- thẻ add -->
+                    <div class="action-left col-md-4">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal"
+                            data-whatever="@mdo">Add</button>
+                        <!-- data-toggle="modal" : xác định hành vi mở cửa sổ modal (modal window)
+                        data-target="#addModal" :  khi phần tử được kích hoạt, nó sẽ mở cửa sổ modal với id "addModal". Id này thường được sử dụng để liên kết phần tử kích hoạt với cửa sổ modal tương ứng
+                        data-whatever="@mdo": Đây là thuộc tính data-whatever được sử dụng để truyền dữ liệu tùy chỉnh từ phần tử gốc đến cửa sổ modal. Trong trường hợp này, 
+                        giá trị "@mdo" được truyền vào thuộc tính data-whatever của cửa sổ modal để sử dụng cho mục đích tùy chỉnh nào đó -->
+                    </div>
+                    <!-- thẻ tìm kiếm -->
+                    <div class="action-right col-md-8">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control" aria-describedby="emailHelp"
+                                    placeholder="Enter keyword" ng-model="searchText" ng-change="searchStudents()">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Chức năng khi mở thẻ Add -->
+            <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-row">
+                                    <!-- firstName -->
+                                    <div class="form-group col-md-6">
+                                        <label for="newFirstName-name" class="col-form-label">First Name:</label>
+                                        <input type="text" class="form-control" id="newFirstName-name"
+                                            ng-model="newStudent.firstName">
+                                    </div>
+                                    <!-- lastName -->
+                                    <div class="form-group col-md-6">
+                                        <label for="newLastName-name" class="col-form-label">Last Name:</label>
+                                        <input type="text" class="form-control" id="newLastName-name"
+                                            ng-model="newStudent.lastName">
+                                    </div>
+                                </div>
+                                <!-- address -->
+                                <div class="form-group">
+                                    <label for="newAddress" class="col-form-label">Address:</label>
+                                    <input type="text" class="form-control" id="newAddress"
+                                        ng-model="newStudent.address">
+                                </div>
+                                <div class="form-row">
+                                    <!-- age -->
+                                    <div class="form-group col-md-3">
+                                        <label for="newAge" class="col-form-label">Age:</label>
+                                        <input type="number" class="form-control" id="newAge" ng-model="newStudent.age">
+                                    </div>
+                                    <!-- phone -->
+                                    <div class="form-group col-md-9">
+                                        <label for="newPhone" class="col-form-label">Phone:</label>
+                                        <input type="number" class="form-control" id="newPhone"
+                                            ng-model="newStudent.phone">
+                                    </div>
+                                </div>
+                                <!-- dob -->
+                                <div class="form-group">
+                                    <label for="newDob" class="col-form-label">Date of Birth:</label>
+                                    <input type="date" class="form-control" id="newDob" ng-model="newStudent.dob">
+                                </div>
+                                <!-- email -->
+                                <div class="form-group">
+                                    <label for="newEmail" class="col-form-label">Email:</label>
+                                    <input type="email" class="form-control" id="newEmail" ng-model="newStudent.email">
+                                </div>
+                                <!-- username -->
+                                <div class="form-group">
+                                    <label for="newUsername" class="col-form-label">Username:</label>
+                                    <input type="text" class="form-control" id="newUsername"
+                                        ng-model="newStudent.username">
+                                </div>
+                                <!-- password -->
+                                <div class="form-group">
+                                    <label for="newPassword" class="col-form-label">Password:</label>
+                                    <input type="password" class="form-control" id="newPassword"
+                                        ng-model="newStudent.password">
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" ng-click="checkInput()">Save</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">DoB</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody ng-if="students.length > 0">
+                    <tr ng-repeat="student in getCurrentPageStudents() | filter:searchText ">
+                        <th scope="row">{{$index + 1 + (currentPage - 1) * pageSize}}</th>
+                        <td>{{student.firstName + ' ' + student.lastName}}</td>
+                        <td>{{student.address}}</td>
+                        <td>{{student.phone}}</td>
+                        <td>{{student.dob | date:'dd/MM/yyyy' }}</td>
+                        <td>{{student.email}}</td>
+                        <td>
+                            <button class="btn btn-secondary" title="Edit" data-toggle="modal" data-target="#editModal"
+                                ng-click="setEditStudent(student)"> <img src="edit.png" width="20px" alt="edit">
+                            </button>
+                            <button class="btn btn-secondary" title="Delete" data-toggle="modal"
+                                data-target="#confirmModal" ng-click="setEditStudent(student)"> <img src="delete.png"
+                                    width="20px" alt="delete">
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="students.length === 0">
+                    <tr>
+                        <td colspan="5" class="text-center">No data available</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- thẻ khi nhấn nút delete và xác nhận -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn có chắc chắn muốn xóa hay không ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="deleteStudent()">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- thẻ khi muốn nhấn nút edit -->
+            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Student</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-row">
+                                    <!-- firstName -->
+                                    <div class="form-group col-md-6">
+                                        <label for="firstName-name" class="col-form-label">First Name:</label>
+                                        <input type="text" class="form-control" id="firstName-name"
+                                            ng-model="editStudentData.firstName">
+                                    </div>
+                                    <!-- lastName -->
+                                    <div class="form-group col-md-6">
+                                        <label for="lastName-name" class="col-form-label">Last Name:</label>
+                                        <input type="text" class="form-control" id="lastName-name"
+                                            ng-model="editStudentData.lastName">
+                                    </div>
+                                </div>
+                                <!-- address -->
+                                <div class="form-group">
+                                    <label for="address" class="col-form-label">Address:</label>
+                                    <input type="text" class="form-control" id="address"
+                                        ng-model="editStudentData.address">
+                                </div>
+                                <div class="form-row">
+                                    <!-- age -->
+                                    <div class="form-group col-md-6">
+                                        <label for="age" class="col-form-label">Age:</label>
+                                        <input type="number" class="form-control" id="age"
+                                            ng-model="editStudentData.age">
+                                    </div>
+                                    <!-- phone -->
+                                    <div class="form-group col-md-6">
+                                        <label for="phone" class="col-form-label">Phone:</label>
+                                        <input type="number" class="form-control" id="phone"
+                                            ng-model="editStudentData.phone">
+                                    </div>
+                                </div>
+                                <!-- dob -->
+                                <div class="form-group">
+                                    <label for="dob" class="col-form-label">Date of Birth:</label>
+                                    <input type="date" class="form-control" id="dob" ng-model="editStudentData.dob">
+                                </div>
+                                <!-- email -->
+                                <div class="form-group">
+                                    <label for="email" class="col-form-label">Email:</label>
+                                    <input type="email" class="form-control" id="email" ng-model="editStudentData.email"
+                                        ng-blur="checkEmailValidity()">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" ng-click="checkEditStudent()">Save</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- phân trang -->
+            <div class="pagination">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li ng-class="{ 'page-item': true, 'disabled': currentPage === 1 }">
+                            <a class="page-link" href="#" ng-click="setCurrentPage(1)" aria-label="First">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">First</span>
+                            </a>
+                        </li>
+                        <li ng-class="{ 'page-item': true, 'disabled': currentPage === 1 }">
+                            <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)"
+                                aria-label="Previous">
+                                <span aria-hidden="true">&lsaquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li ng-repeat="page in getPages()"
+                            ng-class="{ 'page-item': true, 'active': page === currentPage }">
+                            <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                        </li>
+                        <li ng-class="{ 'page-item': true, 'disabled': currentPage === totalPages }">
+                            <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                <span aria-hidden="true">&rsaquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                        <li ng-class="{ 'page-item': true, 'disabled': currentPage === totalPages }">
+                            <a class="page-link" href="#" ng-click="setCurrentPage(totalPages)" aria-label="Last">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Last</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <script>
+                var app = angular.module('myApp', []);
+                app.controller('tableCtrl', function ($scope, $http, $window, $filter) {
+                    $scope.students = [];
+                    $scope.allStudent = [];
+                    $scope.newStudent = {};
+                    console.log($scope.newStudent);
+                    $scope.currentPage = 1;
+                    $scope.pageSize = 5;
+                    $scope.editStudentData = {};
+                    var value = localStorage.getItem('value');
+
+                    // load data khi khởi động
+                    $scope.loadData = function () {
+                        var data = JSON.parse(localStorage.getItem('data'));
+
+                        if (data === null) {
+                            data = [];
+                        }
+
+                        $scope.allStudent = data;
+
+                        if (Array.isArray($scope.allStudent)) {
+                            for (let i = 0; i < $scope.allStudent.length; i++) {
+                                if ($scope.allStudent[i].isDelete === 0) {
+                                    $scope.students.push($scope.allStudent[i]);
+                                }
+                            }
+                        }
+
+                        $scope.totalPages = Math.ceil($scope.students.length / $scope.pageSize);
+                    };
+                    $scope.loadData()
+
+                    if (value === null) {
+                        value = 0;
+                        localStorage.setItem('value', JSON.stringify(value));
+                    }
+
+                    // phân trang khi khởi động
+                    $scope.getCurrentPageStudents = function () {
+                        var begin = (($scope.currentPage - 1) * $scope.pageSize);
+                        var end = begin + $scope.pageSize;
+                        return $scope.students.slice(begin, end);
+                    };
+
+                    $scope.getPages = function () {
+                        var pages = [];
+                        var totalPages = Math.ceil($scope.students.length / $scope.pageSize);
+                        for (var i = 1; i <= totalPages; i++) {
+                            pages.push(i);
+                        }
+                        return pages;
+                    };
+
+                    $scope.setCurrentPage = function (page) {
+                        $scope.currentPage = page;
+                    };
+
+                    // khi edit hoặc delete thì gửi dữ liệu vào data
+                    $scope.setEditStudent = function (student) {
+                        $scope.editStudentData = student;
+                    };
+
+                    //Kiểm tra data khi Add
+                    $scope.checkInput = function () {
+                        var errorMessage = validateData($scope.newStudent);
+
+                        if (errorMessage !== "") {
+                            $window.alert('Mời kiểm tra lại thông tin:\n' + errorMessage);
+                        } else {
+                            // $scope.newStudent.dob = $filter('date')($scope.newStudent.dob, 'MM/dd/yyyy');
+                            console.log("tao đã check thành công, tao đem đi add đây");
+                            $scope.addStudent();
+                        }
+                    };
+
+                    $scope.checkEditStudent = function () {
+                        var errorMessage = validateData($scope.editStudentData);
+
+                        if (errorMessage !== "") {
+                            $window.alert('Mời kiểm tra lại thông tin:\n' + errorMessage);  
+                        } else {
+                            var today = new Date();
+                            console.log("tao đã chỉnh sửa thành công");
+                            console.log($scope.editStudent);
+                            
+                            var newStudent = {
+                                id: $scope.editStudentData.id,
+                                firstName: $scope.editStudentData.firstName,
+                                lastName: $scope.editStudentData.lastName,
+                                address: $scope.editStudentData.address,
+                                phone: $scope.editStudentData.phone,
+                                age: $scope.editStudentData.age,
+                                dob: $scope.editStudentData.dob,
+                                email: $scope.editStudentData.email,
+                                username: $scope.editStudentData.username,
+                                password: $scope.editStudentData.password,
+                                createdDate: today,
+                                isDelete: 0
+                            };
+                            $scope.editStudentData = {};
+                            saveDataToLocal(newStudent);
+                            $('#editModal').modal('hide');
+                        }
+                    };
+
+                    // Hàm kiểm tra data
+                    function validateData(student) {
+                        var errorMessage = "";
+
+                        // if (!student.firstName) {
+                        //     errorMessage += "- Vui lòng nhập tên!\n";
+                        // } else if (!/^[a-zA-Z ]+$/.test(student.firstName)) {
+                        //     errorMessage += "- Tên không được chứa ký tự đặc biệt!\n";
+                        // }
+
+                        // if (!student.lastName) {
+                        //     errorMessage += "- Vui lòng nhập họ!\n";
+                        // } else if (!/^[a-zA-Z ]+$/.test(student.lastName)) {
+                        //     errorMessage += "- Họ không được chứa ký tự đặc biệt!\n";
+                        // }
+
+                        if (!student.address) {
+                            errorMessage += "- Vui lòng nhập địa chỉ!\n";
+                        }
+
+                        // if (!student.phone) {
+                        //     errorMessage += "- Vui lòng nhập số điện thoại!\n";
+                        // } else if (!/^\d{10}$/.test(student.phone)) {
+                        //     errorMessage += "- Số điện thoại phải có 10 chữ số!\n";
+                        // }
+
+                        if (!student.age) {
+                            errorMessage += "- Vui lòng nhập tuổi!\n";
+                        } else if (student.age < 0) {
+                            errorMessage += "- Tuổi không được là số âm!\n";
+                        }
+
+                        if (!student.dob) {
+                            errorMessage += "- Vui lòng nhập ngày sinh!\n";
+                        }
+
+                        // if (!ValidateEmail(student.email)) {
+                        //     errorMessage += "- Địa chỉ email không hợp lệ!\n";
+                        // }
+
+                        return errorMessage;
+                    }
+
+                    $scope.addStudent = function () {
+                        var today = new Date();
+                        var newStudent = {
+                            id: value++,
+                            firstName: $scope.newStudent.firstName,
+                            lastName: $scope.newStudent.lastName,
+                            address: $scope.newStudent.address,
+                            phone: $scope.newStudent.phone,
+                            age: $scope.newStudent.age,
+                            dob: $scope.newStudent.dob,
+                            email: $scope.newStudent.email,
+                            username: $scope.newStudent.username,
+                            password: $scope.newStudent.password,
+                            createdDate: today,
+                            isDelete: 0
+                        };
+                        $scope.students.push(newStudent);
+                        saveDataToLocal(newStudent);
+                        $scope.newStudent = {};
+                        $('#addModal').modal('hide');
+                    };
+
+                    function saveDataToLocal(student) {
+                        localStorage.setItem("value", value);
+                        localStorage.setItem("data", JSON.stringify($scope.allStudent));
+                        $scope.totalPages = Math.ceil($scope.students.length / $scope.pageSize);
+                    }
+
+
+                    $scope.searchStudents = function () {
+                        $scope.filteredStudents = $scope.students.filter(function (student) {
+                            const values = Object.values(student);
+                            for (const value of values) {
+                                if (value && value.toString().toLowerCase().includes($scope
+                                        .searchText.toLowerCase()) && student.isDelete === 0) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        });
+                    };
+
+
+                    $scope.deleteStudent = function () {
+                        var today = new Date();
+                        $scope.editStudentData.isDelete = 1;
+                        saveDataToLocal($scope.editStudentData);
+                        $scope.editStudentData = {};
+                        $('#confirmModal').modal('hide');
+                    };
+
+                    // $scope.checkEmailValidity = function () {
+                    //     if (ValidateEmail(!$scope.email)) {
+                    //         $window.alert("Invalid email!");
+                    //     }
+                    // };
+
+                    // function ValidateEmail(mail) {
+                    //     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+                    //         return true;
+                    //     }
+                    //     return false;
+                    // }
+                });
+            </script>
+        </div>
+    </div>
+</body>
+<style>
+    .header {
+        margin-top: 20px;
+    }
+</style>
+
+</html>

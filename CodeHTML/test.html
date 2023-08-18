@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Toastr Example</title>
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+<body>
+    <!-- Your HTML content -->
+    <button id="showToastBtn">Show Toast</button>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var showToastBtn = document.getElementById("showToastBtn");
+
+            // Khi nút "Show Toast" được nhấn
+            showToastBtn.addEventListener("click", function() {
+                // Hiển thị thông báo sử dụng thư viện toastr.js
+                toastr.options = {
+                    "positionClass": "toast-bottom-right", // Vị trí hiển thị
+                    "timeOut": 3000 // Tự động tắt sau 3 giây
+                };
+                toastr.success("Đây là một thông báo toast!");
+
+                // Hoặc sử dụng các hàm khác như toastr.error(), toastr.warning(), toastr.info()
+            });
+        });
+    </script>
+</body>
+</html>

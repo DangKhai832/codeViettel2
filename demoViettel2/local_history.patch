@@ -1,0 +1,17 @@
+Index: src/main/java/com/example/demoViettel2/Controller/StudentController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/example/demoViettel2/Controller/StudentController.java b/src/main/java/com/example/demoViettel2/Controller/StudentController.java
+--- a/src/main/java/com/example/demoViettel2/Controller/StudentController.java	
++++ b/src/main/java/com/example/demoViettel2/Controller/StudentController.java	(date 1692329433880)
+@@ -56,7 +56,7 @@
+                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+     }
+ 
+-    @GetMapping("/{id}")
++    @PostMapping ("/{id}")
+     public ResponseEntity<Student> searchStudent(@PathVariable Long id) {
+         Optional<Student> student = studentService.searchStudent(id);
+         return student.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
